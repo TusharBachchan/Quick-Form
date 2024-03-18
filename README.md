@@ -1,1 +1,1 @@
-1. setup authentication with clerk
+1. Setup authentication with clerk
