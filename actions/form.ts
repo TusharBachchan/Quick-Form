@@ -33,7 +33,7 @@ export async function GetFormStats() {
   const bounceRate = 100 - submissionRate;
 
   return {
-    visits, submissionRate, bounceRate
+    visits, submissions, submissionRate, bounceRate
   }
 
 }
