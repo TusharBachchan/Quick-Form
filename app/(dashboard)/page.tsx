@@ -1,4 +1,4 @@
-import { GetFormStats } from "@/actions/form";
+import { GetFormStats, GetForms } from "@/actions/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReactNode, Suspense } from "react";
@@ -8,6 +8,7 @@ import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
 import CreateFormBtn from "@/components/CreateFormBtn";
+import { Form } from "@prisma/client";
 export default function Home() {
   return (
     <div className="container pt-4">
@@ -15,9 +16,16 @@ export default function Home() {
         <CardStatsWrapper />
       </Suspense>
       <Separator className="my-6" />
-        <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
-        <Separator className="my-6" />
-        <CreateFormBtn></CreateFormBtn>
+      <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
+      <Separator className="my-6" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <CreateFormBtn />
+        <Suspense fallback={[1, 2, 3, 4].map((el) => (
+          <FormCardSkeleton key={ el } />
+        ))}>
+          <FormCards />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -104,6 +112,37 @@ function StatsCard({
         </div>
         <p className="text-xs text-muted-foreground pt-1">{ helperText }</p>
       </CardContent>
+    </Card>
+  );
+}
+
+function FormCardSkeleton() {
+  return <Skeleton className="border-2 border-primary-/20 h-[190px] w-full" />
+}
+
+async function FormCards(){
+  const forms = await GetForms();
+  return <>
+    {
+      forms.map(form => (
+        <FormCard key={form.id} form={form} />
+      ))
+    }
+  </>
+}
+
+function FormCard({form} : {
+  form: Form
+}){
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <span className="flex items-center gap-2 justify-between">
+            {form.name}
+          </span>
+        </CardTitle>
+      </CardHeader>
     </Card>
   );
 }

@@ -30,6 +30,9 @@ model Form {
 
   shareURL        String            @default(uuid())
   FormSubmissions FormSubmissions[]
+
+  // A user cannot create 2 forms with the same name, so we add unique constraint
+  @@unique([name, userId])
 }
 
 // formId -> to use for relation with the form model, content -> it will contain stringified form submissions
