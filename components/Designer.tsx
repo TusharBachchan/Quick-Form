@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import DesignerSidebar from './DesignerSidebar'
-import {useDroppable} from "@dnd-kit/core"
+import { useDroppable } from "@dnd-kit/core"
 
 function Designer() {
     const droppable = useDroppable({
